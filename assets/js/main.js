@@ -140,3 +140,123 @@ sr.reveal(`.home__social`, {delay: 600})
 sr.reveal(`.about__img, .contact__box`,{origin: 'left'})
 sr.reveal(`.about__data, .contact__form`,{origin: 'right'})
 sr.reveal(`.steps__card, .product__card, .questions__group, .footer`,{interval: 100})
+
+// countdown cuenta regresiva temporizador//
+
+const getRemainTime = deadline =>{
+    let now = new Date(),
+    remainTime = (new Date(deadline) - now + 1000)/1000,
+    remainSeconds = ('0' + Math.floor(remainTime % 60)).slice(-2),
+    remainMinutes = ('0' + Math.floor(remainTime/60 % 60)).slice(-2),
+    remainHours = ('0' + Math.floor(remainTime/3600 % 24)).slice(-2),
+    remainDays = Math.floor(remainTime / (3600 * 24));
+
+return{
+    remainTime,
+    remainSeconds,
+    remainMinutes,
+    remainHours,
+    remainDays
+
+}    
+
+};
+
+const countdown = (deadline, elem, finalMessage) =>{
+    const el = document.getElementById(elem)
+
+    const timerUpdate = setInterval (()=>{
+        let t = getRemainTime(deadline);
+        /*el.innerHTML = `${t.remainDays}d:${t.remainHours}H:${t.remainMinutes}M:${t.remainSeconds}s`*/
+        el.innerHTML = `
+        
+        <div class="countdown section container"> <h2 class="section__title-center">¿Cuanto falta para la Conferencia?</h2>
+        
+        <div class="countdown__container">
+        
+        <div class="block">
+                    <div class="day" id="day">${t.remainDays}</div>
+                    <p>Dias</p>
+            </div>
+            <div class="block">
+                <div class="hour" id="hour">${t.remainHours}</div>
+                    <p>Horas</p>
+            </div>
+            <div class="block">
+                <div class="min" id="min">${t.remainMinutes}</div>
+                    <p>Minutos</p>
+            </div>
+            <div class="block">
+                <div class="seg" id="seg">${t.remainSeconds}</div>
+                    <p>Segs</p>
+            </div>
+        </div>    
+        
+          
+        <div class="countdown__button">
+                <a href="https://wa.me/+593987236631?text=Me%20interesa%20el%20curso%20de%20transformación" class="button">Quiero estar en la Conferencia</a>
+            </div>
+            </div>  
+        `
+
+    if (t.remainTime <=1){
+        clearInterval(timerUpdate);
+        el.innerHTML = finalMessage;
+    }
+},1000)
+    }
+
+    countdown('Apr 03 2022 16:00:00 GMT-0500', 'clock', '<div class="countdown section container"> <h2 class="section__title-center">¿Cuanto falta para la Conferencia?</h2><h2 class="section__title-center">¡ Ya comenzó !</h2><div class="countdown__button"><a href="https://wa.me/+593987236631?text=Me%20interesa%20el%20curso%20de%20transformación" class="button">Quiero estar en la próxima clase</a></div></div>');
+
+/*==================== TESTIMONIAL ====================*/
+let swiperTestimonial = new Swiper('.testimonial__container', {
+    
+    loop:true,
+    grabCursor:true,
+    spaceBetween:48,
+   
+    pagination: {
+      el: '.swiper-pagination',
+      clickable:true,
+      dynamicBullets:true,
+    },
+    breakpoints:{
+        568:{
+            slidesPerView: 2,
+        }
+    }
+ 
+  });
+
+  /*==================== VIDEO ====================*/
+const videoFile = document.getElementById('video-file'),
+videoButton = document.getElementById('video-button'),
+videoIcon = document.getElementById('video-icon')
+
+function playPause(){ 
+if (videoFile.paused){
+  // Play video
+  videoFile.play()
+  // We change the icon
+  videoIcon.classList.add('ri-pause-line')
+  videoIcon.classList.remove('ri-play-line')
+}
+else {
+  // Pause video
+  videoFile.pause(); 
+  // We change the icon
+  videoIcon.classList.remove('ri-pause-line')
+  videoIcon.classList.add('ri-play-line')
+
+}
+}
+videoButton.addEventListener('click', playPause)
+
+function finalVideo(){
+// Video ends, icon change
+videoIcon.classList.remove('ri-pause-line')
+videoIcon.classList.add('ri-play-line')
+}
+// ended, when the video ends
+videoFile.addEventListener('ended', finalVideo)
+
